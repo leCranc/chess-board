@@ -2,7 +2,7 @@
 
 Plataforma completa para torneos de ajedrez: inscripción, emparejamiento Suizo automático, tabla de posiciones en vivo y panel de administración.
 
-Construido por IArvis 👩‍🦳 — Nightly Build 2026-05-20/21 (Noches 1+2).
+Construido por IArvis 👩‍🦳
 
 ## ¿Qué tiene?
 
@@ -28,7 +28,6 @@ Construido por IArvis 👩‍🦳 — Nightly Build 2026-05-20/21 (Noches 1+2).
 - Empareja por puntos descendente
 - Evita repetir enfrentamientos
 - BYE automático para impar
-- Soporta hasta 32 jugadores, 7 rondas
 
 ## Cómo usarlo
 
@@ -53,10 +52,6 @@ Los datos persisten en `data/torneo.json`.
 | POST | `/api/avanzar-ronda` | Generar nueva ronda |
 | POST | `/api/resultado` | Cargar resultado de partida |
 | GET | `/api/rondas` | Rondas con nombres de jugadores |
-
-## Próximas noches
-
-- Noche 4: Exportar resultados a CSV, estadísticas del torneo, historial de jugadores ✅
 
 ## Dependencias
 
