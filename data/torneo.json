@@ -1,0 +1,17 @@
+{
+  "nombre": "Liga de Ajedrez Ceresina",
+  "fecha": "2026-06-26",
+  "lugar": "Hipólito Vieytes 236",
+  "sistema": "Suizo",
+  "rondas_total": 4,
+  "ritmo": "10+2",
+  "inscripcion_abierta": true,
+  "cupo_maximo": 32,
+  "torneo_iniciado": false,
+  "torneo_finalizado": false,
+  "jugadores": [],
+  "rondas": [],
+  "ciudad": "Ceres",
+  "provincia": "Santa Fe",
+  "pais": "Argentina"
+}

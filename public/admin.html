@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="adminTitle">Chess Tournament Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #0a0a1a; color: #d0d0e0; min-height: 100vh;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+
+    nav { display: flex; gap: 10px; margin-bottom: 20px; }
+    nav a { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: #888; font-size: 0.9rem; }
+    nav a:hover, nav a.active { background: #1a1a35; color: #e0e0ff; }
+
+    h1 { font-size: 1.6rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .card {
+      background: #16162e; border: 1px solid #2a2a4a; border-radius: 12px;
+      padding: 20px; margin-bottom: 20px;
+    }
+    .card h2 { font-size: 1.1rem; margin-bottom: 14px; color: #e0e0ff; }
+
+    .btn {
+      padding: 10px 20px; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s;
+    }
+    .btn-primary { background: #5a4aff; color: white; }
+    .btn-primary:hover { background: #6b5bff; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-success { background: #30a060; color: white; }
+    .btn-success:hover { background: #40b070; }
+    .btn-warning { background: #d08020; color: white; }
+    .btn-nuevo { background: #2a2a4a; color: #d0d0e0; }
+    .btn-nuevo:hover { background: #3a3a5a; }
+    .btn-danger { background: #c04040; color: white; }
+    .btn-danger:hover { background: #d05050; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-edit { background: #3a6ac0; color: white; }
+    .btn-edit:hover { background: #4a7ad0; }
+    .btn-delete { background: #c04040; color: white; }
+    .btn-delete:hover { background: #d05050; }
+
+    .status-msg { padding: 10px 14px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; display: none; }
+    .status-msg.info { display: block; background: #1a1a3a; color: #8080ff; border: 1px solid #2a2a5a; }
+    .status-msg.error { display: block; background: #3a1a1a; color: #d06060; border: 1px solid #5a2a2a; }
+    .status-msg.success { display: block; background: #1a3a2a; color: #60d080; border: 1px solid #2a5a3a; }
+
+    .partida-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px; background: #1a1a35; border-radius: 8px; margin-bottom: 8px;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .partida-row .info { flex: 1; min-width: 200px; }
+    .partida-row .nombre-b { color: #e0e0ff; font-weight: 600; }
+    .partida-row .nombre-n { color: #888; }
+    .partida-row .vs { color: #444; }
+    .resultado-select { padding: 6px 10px; background: #2a2a4a; border: 1px solid #3a3a5a; border-radius: 6px; color: #d0d0e0; font-size: 14px; }
+    .resultado-select:focus { outline: none; border-color: #5a4aff; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+    .ronda-badge {
+      display: inline-block; background: #2a2a4a; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;
+    }
+
+    input, select {
+      padding: 8px 10px; background: #1a1a35; border: 1px solid #3a3a5a;
+      border-radius: 6px; color: #d0d0e0; font-size: 14px; width: 100%; box-sizing: border-box;
+    }
+    input:focus, select:focus { outline: none; border-color: #5a4aff; }
+    label { display: block; font-size: 0.85rem; color: #888; margin-bottom: 4px; }
+
+    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 500px; }
+
+    .jugador-actions { display: flex; gap: 6px; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 200;
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #16162e; border: 1px solid #2a2a4a; border-radius: 16px;
+      padding: 28px; width: 380px; max-width: 90vw;
+    }
+    .modal h3 { font-size: 1.1rem; margin-bottom: 16px; color: #e0e0ff; }
+    .modal .field { margin-bottom: 12px; }
+    .modal .btn-row { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+  </style>
+  <script src="/i18n.js"></script>
+</head>
+<body>
+  <!-- ════ Login Screen ════ -->
+  <div id="login-screen" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#0a0a1a;z-index:100;align-items:center;justify-content:center">
+    <div style="background:#16162e;border:1px solid #2a2a4a;border-radius:16px;padding:40px;width:340px;max-width:90vw">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-size:2.5rem;margin-bottom:8px">🔐</div>
+        <h2 style="color:#e0e0ff;font-size:1.3rem">Panel del Árbitro</h2>
+        <p style="color:#666;font-size:0.85rem;margin-top:4px">Ingresá para administrar el torneo</p>
+      </div>
+      <input type="text" id="login-user" placeholder="Usuario" autocomplete="username"
+        style="width:100%;padding:12px;margin-bottom:12px;background:#1a1a35;border:1px solid #3a3a5a;border-radius:8px;color:#d0d0e0;font-size:15px;box-sizing:border-box">
+      <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password"
+        style="width:100%;padding:12px;margin-bottom:16px;background:#1a1a35;border:1px solid #3a3a5a;border-radius:8px;color:#d0d0e0;font-size:15px;box-sizing:border-box">
+      <button onclick="intentarLogin()" style="width:100%;padding:12px;background:#5a4aff;color:white;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer">
+        Ingresar
+      </button>
+      <div class="status-msg" id="login-msg" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <!-- ════ Admin Content ════ -->
+  <div id="admin-content">
+  <div class="container">
+    <nav>
+      <a href="/" data-i18n="home">🏠 Home</a>
+      <a href="/panel-admin" class="active" data-i18n="adminPanel">⚙️ Admin</a>
+      <a href="#" onclick="cerrarSesion()" style="margin-left:auto;color:#d06060">🔒 Salir</a>
+    </nav>
+
+    <h1>⚙️ Panel del Árbitro</h1>
+
+    <!-- ══ Configuración ══ -->
+    <div class="card" id="card-config">
+      <h2>🔧 Configuración del Torneo</h2>
+      <div class="config-grid">
+        <div style="grid-column:1/-1">
+          <label>Nombre del torneo</label>
+          <input type="text" id="input-nombre" placeholder="Ej: Torneo Anual de Ajedrez">
+        </div>
+        <div style="grid-column:1/-1">
+          <label>Lugar del evento (dirección)</label>
+          <input type="text" id="input-lugar" placeholder="Ej: Club Social, San Martín 123">
+          <div style="font-size:0.75rem;color:#555;margin-top:2px">🌍 Dirección para copiar a Google Maps</div>
+        </div>
+        <div>
+          <label>Ciudad</label>
+          <input type="text" id="input-ciudad" placeholder="Ej: Ceres">
+        </div>
+        <div>
+          <label>Provincia</label>
+          <input type="text" id="input-provincia" placeholder="Ej: Santa Fe">
+        </div>
+        <div>
+          <label>País</label>
+          <input type="text" id="input-pais" placeholder="Ej: Argentina">
+        </div>
+        <div>
+          <label>Fecha del torneo</label>
+          <input type="date" id="input-fecha">
+        </div>
+        <div>
+          <label>Ritmo de juego</label>
+          <input type="text" id="input-ritmo" placeholder="Ej: 15+10">
+        </div>
+        <div>
+          <label>Rondas totales</label>
+          <input type="number" id="input-rondas" min="1" max="20" value="7">
+        </div>
+        <div>
+          <label>Cupo máximo</label>
+          <input type="number" id="input-cupo" min="0" value="0">
+          <div style="font-size:0.75rem;color:#666;margin-top:2px">0 = sin límite</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn-config" onclick="guardarConfig()" style="margin-top:12px">💾 Guardar Configuración</button>
+      <div class="status-msg" id="config-msg"></div>
+    </div>
+
+    <!-- ══ Inscripción Rápida ══ -->
+    <div class="card" id="card-inscripcion-rapida">
+      <h2>⚡ Inscripción Rápida</h2>
+      <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <label>Jugador desde la base</label>
+          <select id="select-jugador-base">
+            <option value="">— Seleccionar —</option>
+            <option value="__nuevo__">🆕 Nuevo jugador</option>
+          </select>
+        </div>
+        <button class="btn btn-success" onclick="inscribirRapido()" style="margin-bottom:0">✅ Inscribir</button>
+      </div>
+      <div style="margin-top:10px;padding:10px;background:#1a1a35;border-radius:8px;display:none" id="rapido-datos">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label>Nombre</label><input type="text" id="rapido-nombre" placeholder="Nombre completo"></div>
+          <div><label>Email</label><input type="email" id="rapido-email" placeholder="correo@ejemplo.com"></div>
+          <div><label>Teléfono</label><input type="text" id="rapido-telefono" placeholder="+54 9..."></div>
+          <div><label>Club</label><input type="text" id="rapido-club" placeholder="Club o localidad"></div>
+        </div>
+      </div>
+      <div class="status-msg" id="rapido-msg"></div>
+    </div>
+
+    <!-- ══ Iniciar torneo ══ -->
+    <div class="card">
+      <h2>🚀 Control del Torneo</h2>
+      <div id="control-info" style="margin-bottom:12px;color:#888;font-size:0.9rem">
+        Cargando estado...
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="btn-iniciar" onclick="iniciarTorneo()">🎬 Iniciar Torneo</button>
+        <button class="btn btn-success" id="btn-ronda" onclick="avanzarRonda()">➕ Avanzar Ronda</button>
+        <button class="btn btn-danger" id="btn-finalizar" onclick="finalizarTorneo()">🏁 Finalizar Torneo</button>
+        <button class="btn btn-nuevo" id="btn-nuevo" onclick="nuevoTorneo()">🆕 Nuevo Torneo</button>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #2a2a4a">
+        <button class="btn btn-primary" onclick="exportarPDF()">📄 Exportar Reporte</button>
+      </div>
+      <div class="status-msg" id="control-msg"></div>
+    </div>
+
+    <!-- ══ Resultados ronda actual ══ -->
+    <div class="card" id="card-resultados">
+      <h2>📝 Resultados <span id="ronda-label" class="ronda-badge">Ronda —</span></h2>
+      <div id="resultados-lista">
+        <div style="color:#555;font-style:italic">Esperando que se avance una ronda...</div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-warning" id="btn-guardar" onclick="guardarResultados()">💾 Guardar Resultados</button>
+        <button class="btn btn-primary" onclick="imprimirRonda()">🖨️ Imprimir Ronda</button>
+      </div>
+      <div class="status-msg" id="resultados-msg"></div>
+    </div>
+
+    <!-- ══ Jugadores ══ -->
+    <div class="card" id="card-jugadores">
+      <h2>👥 Jugadores</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
+        <thead><tr><th>#</th><th>Nombre</th><th>Elo</th><th>Club</th><th>Pts</th><th>Acciones</th></tr></thead>
+        <tbody id="admin-jugadores"></tbody>
+      </table>
+      <div class="status-msg" id="jugadores-msg"></div>
+    </div>
+
+
+
+    <!-- ══ Historial Completo ══ -->
+    <div class="card" id="card-historial">
+      <h2>📊 Historial Completo</h2>
+      <style>
+        .hist-tab-btn { flex:1; padding:8px; border:none; background:transparent; color:#666; font-size:0.85rem; cursor:pointer; border-radius:8px; transition:all .2s; }
+        .hist-tab-btn:hover { color:#aaa; }
+        .hist-tab-btn.active { background:#2a2a4a; color:#e0e0ff; font-weight:600; }
+        .hist-tab-content { display:none; }
+        .hist-tab-content.active { display:block; }
+        .hist-tab-content table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+        .hist-tab-content th { text-align:left; padding:6px 8px; color:#888; font-size:0.75rem; text-transform:uppercase; border-bottom:1px solid #2a2a4a; position:sticky; top:0; background:#16162e; }
+        .hist-tab-content td { padding:6px 8px; border-bottom:1px solid #1a1a30; }
+        .hist-tab-content tr:hover td { background:#1a1a35; }
+        .hist-scroll { max-height:400px; overflow-y:auto; border-radius:8px; }
+      </style>
+      <div style="display:flex;gap:4px;margin-bottom:12px;background:#0f0f25;border-radius:10px;padding:4px">
+        <button class="hist-tab-btn active" onclick="switchHistorialTab('torneos', this)">🏆 Torneos</button>
+        <button class="hist-tab-btn" onclick="switchHistorialTab('jugadores', this)">👤 Jugadores</button>
+        <button class="hist-tab-btn" onclick="switchHistorialTab('partidas', this)">♟️ Partidas</button>
+      </div>
+      <div id="historial-resumen" style="margin-bottom:10px;color:#888;font-size:0.8rem"></div>
+      <div id="historial-contenido" class="hist-scroll">
+        <div style="color:#555;font-style:italic">Cargando...</div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- ════ Modal Editar Jugador ════ -->
+  <div class="modal-overlay" id="modal-editar">
+    <div class="modal">
+      <h3>✏️ Editar Jugador</h3>
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" id="edit-nombre">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="edit-email">
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="text" id="edit-telefono">
+      </div>
+      <div class="field">
+        <label>Club</label>
+        <input type="text" id="edit-club">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="guardarEdicion()">💾 Guardar</button>
+        <button class="btn" style="background:#3a3a5a;color:#aaa" onclick="cerrarModal()">Cancelar</button>
+      </div>
+      <div class="status-msg" id="edit-msg"></div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+
+    // ── Auth ──
+    const AUTH_USER = 'Admin';
+    const AUTH_PASS = 'password';
+
+    let autenticado = sessionStorage.getItem('torneo_auth') === 'true';
+    let editandoId = null;
+
+    function mostrarLogin() {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('admin-content').style.display = 'none';
+    }
+
+    function mostrarAdmin() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+    }
+
+    function intentarLogin() {
+      const user = document.getElementById('login-user').value;
+      const pass = document.getElementById('login-pass').value;
+      const msg = document.getElementById('login-msg');
+
+      if (user === AUTH_USER && pass === AUTH_PASS) {
+        sessionStorage.setItem('torneo_auth', 'true');
+        autenticado = true;
+        mostrarAdmin();
+        refresh();
+      } else {
+        msg.className = 'status-msg show error';
+        msg.textContent = '❌ Usuario o contraseña incorrectos';
+      }
+    }
+
+    function cerrarSesion() {
+      sessionStorage.removeItem('torneo_auth');
+      autenticado = false;
+      mostrarLogin();
+    }
+
+    if (!autenticado) {
+      mostrarLogin();
+    }
+
+    async function getTorneo() {
+      const r = await fetch(API + '/api/torneo');
+      return r.json();
+    }
+
+    async function getJugadores() {
+      const r = await fetch(API + '/api/jugadores');
+      return r.json();
+    }
+
+    let estadoActual = {};
+    let jugadoresCache = [];
+
+    async function refresh() {
+      try {
+        const t = await getTorneo();
+        const j = await getJugadores();
+        estadoActual = t;
+        jugadoresCache = j.jugadores || j;
+
+        // Config inputs: solo actualizar si NO tienen focus (el usuario no está escribiendo)
+        const configFields = ['input-nombre', 'input-lugar', 'input-ciudad', 'input-provincia', 'input-pais', 'input-fecha', 'input-ritmo', 'input-cupo', 'input-rondas'];
+        const configValues = { nombre: t.nombre || '', lugar: t.lugar || '', ciudad: t.ciudad || '', provincia: t.provincia || '', pais: t.pais || '', fecha: t.fecha || '', ritmo: t.ritmo || '', cupo: t.cupo_maximo, rondas: t.rondas_total };
+        configFields.forEach(id => {
+          const el = document.getElementById(id);
+          if (document.activeElement !== el) {
+            if (id === 'input-rondas') el.value = configValues.rondas;
+            else if (id === 'input-cupo') el.value = configValues.cupo;
+            else if (id === 'input-nombre') el.value = t.nombre || '';
+            else if (id === 'input-ciudad') el.value = t.ciudad || '';
+            else if (id === 'input-provincia') el.value = t.provincia || '';
+            else if (id === 'input-pais') el.value = t.pais || '';
+            else el.value = configValues[id.replace('input-', '')];
+          }
+          el.disabled = t.torneo_iniciado;
+        });
+        document.getElementById('btn-config').disabled = t.torneo_iniciado;
+
+        // Botones de control
+        const btnIniciar = document.getElementById('btn-iniciar');
+        const btnRonda = document.getElementById('btn-ronda');
+        const btnGuardar = document.getElementById('btn-guardar');
+        const btnFinalizar = document.getElementById('btn-finalizar');
+        const btnNuevo = document.getElementById('btn-nuevo');
+
+        btnIniciar.disabled = t.torneo_iniciado || t.jugadores_count < 2;
+        btnRonda.disabled = !t.torneo_iniciado || t.torneo_finalizado || (t.ronda_actual || 0) >= t.rondas_total;
+        btnGuardar.disabled = !t.torneo_iniciado || t.torneo_finalizado || (t.ronda_actual || 0) === 0;
+
+        // Finalizar: visible si torneo iniciado Y no finalizado
+        btnFinalizar.style.display = (t.torneo_iniciado && !t.torneo_finalizado) ? 'inline-block' : 'none';
+
+        // Nuevo torneo: visible si el torneo está finalizado, o si no tiene jugadores y no está iniciado
+        btnNuevo.style.display = t.torneo_finalizado || (!t.torneo_iniciado && t.jugadores_count === 0) ? 'inline-block' : 'none';
+
+        // Botón Exportar en Control del Torneo: visible si hay datos
+        const btnExport = document.querySelector('.btn[onclick="exportarPDF()"]');
+        if (btnExport) {
+          btnExport.style.display = (t.jugadores_count > 0 && (t.torneo_finalizado || (t.ronda_actual || 0) > 0)) ? 'inline-block' : 'none';
+        }
+
+        const cupoStr = t.cupo_maximo === 0 ? '∞' : t.cupo_maximo;
+        const info = document.getElementById('control-info');
+        info.innerHTML = t.torneo_finalizado
+          ? `🏁 <strong>Torneo finalizado</strong> · ${t.jugadores_count} jugadores · ${t.ronda_actual || 0}/${t.rondas_total} rondas`
+          : t.torneo_iniciado
+          ? `✅ Torneo iniciado · Ronda <strong>${t.ronda_actual || 0}</strong>/<strong>${t.rondas_total}</strong> · ${t.jugadores_count} jugadores`
+          : `⏳ Torneo no iniciado · ${t.jugadores_count}/${cupoStr} jugadores inscriptos`;
+
+        // Tabla jugadores con acciones
+        // Tabla jugadores: si el torneo no está iniciado, ordenar por Elo descendente
+        const ordenados = !t.torneo_iniciado
+          ? [...jugadoresCache].sort((a, b) => (b.elo || b.rating || 1500) - (a.elo || a.rating || 1500))
+          : [...jugadoresCache].sort((a, b) => b.puntos - a.puntos || (b.elo || b.rating || 0) - (a.elo || a.rating || 0));
+        document.getElementById('admin-jugadores').innerHTML = ordenados.map(j =>
+          `<tr>
+            <td>#${j.id}</td>
+            <td><strong>${j.nombre}</strong></td>
+            <td>${j.elo || j.rating || 1500}</td>
+            <td style="color:#666">${j.club || '—'}</td>
+            <td style="color:#f0c040;font-weight:700">${j.puntos}</td>
+            <td>
+              <div class="jugador-actions">
+                <button class="btn btn-sm btn-edit" onclick="abrirEditar(${j.id})">✏️</button>
+                <button class="btn btn-sm btn-delete" onclick="eliminarJugador(${j.id}, '${j.nombre.replace(/'/g, "\\'")}')">🗑️</button>
+              </div>
+            </td>
+          </tr>`
+        ).join('');
+
+        // Cargar rondas
+        await cargarRondas(t);
+
+        // Cargar base de jugadores para inscripción rápida
+        await cargarBaseJugadores();
+
+        // Cargar historial
+        await cargarHistorial();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function cargarRondas(t) {
+      try {
+        // Preservar valores actuales de selects antes de refrescar
+        const selectValues = {};
+        document.querySelectorAll('.resultado-select').forEach(sel => {
+          const key = sel.dataset.b + '|' + sel.dataset.n + '|' + sel.dataset.ronda;
+          selectValues[key] = sel.value;
+        });
+        const r = await fetch(API + '/api/rondas');
+        const rondas = await r.json();
+        const lista = document.getElementById('resultados-lista');
+        const rondaLabel = document.getElementById('ronda-label');
+
+        if (t.torneo_finalizado) {
+          rondaLabel.textContent = '🏁 Torneo finalizado';
+        } else {
+          rondaLabel.textContent = `Ronda ${t.ronda_actual || 0}`;
+        }
+
+        if (!rondas || rondas.length === 0) {
+          lista.innerHTML = '<div style="color:#555;font-style:italic">Esperando que se avance una ronda...</div>';
+          return;
+        }
+
+        const ids = new Map();
+        jugadoresCache.forEach(j => ids.set(j.id, j.nombre));
+
+        const actual = rondas[rondas.length - 1];
+
+        // Verificar si todas las partidas de la ronda actual tienen resultado
+        const todasGuardadas = actual.partidas.length > 0 && actual.partidas.every(p => p.resultado || p.negras === null);
+
+        // Flag de edición: se mantiene aunque el refresh automático lo recargue
+        // Solo se resetea cuando el usuario guarda o cuando avanza de ronda
+        window._editandoRonda = window._editandoRonda || false;
+        const editando = window._editandoRonda && todasGuardadas;
+
+        lista.innerHTML = actual.partidas.map(p => {
+          const nombreB = ids.get(p.blancas) || '?';
+          const nombreN = ids.get(p.negras) || '(BYE)';
+          const isBye = p.negras === null;
+
+          if (isBye) {
+            return `<div class="partida-row" style="opacity:0.6">
+              <div class="info"><span class="nombre-b">${nombreB}</span> <span class="vs">—</span> (BYE)</div>
+              <span style="color:#555">Automático</span>
+            </div>`;
+          }
+
+          // Si el resultado ya está guardado y no estamos editando, mostrar texto
+          if (p.resultado && !editando) {
+            let textoResultado = '—';
+            if (p.resultado === '1-0') textoResultado = `${nombreB} gana`;
+            else if (p.resultado === '0-1') textoResultado = `${nombreN} gana`;
+            else if (p.resultado === '1/2-1/2') textoResultado = 'Empate';
+
+            return `<div class="partida-row" data-b="${p.blancas}" data-n="${p.negras}" data-ronda="${actual.numero}">
+              <div class="info">
+                <span class="nombre-b">${nombreB}</span>
+                <span class="vs">vs</span>
+                <span class="nombre-n">${nombreN}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="color:#60d080;font-weight:600;padding:4px 12px;background:#1a3a2a;border-radius:6px">${textoResultado}</span>
+              </div>
+            </div>`;
+          }
+
+          // Mostrar select para elegir resultado
+          return `<div class="partida-row" data-b="${p.blancas}" data-n="${p.negras}" data-ronda="${actual.numero}">
+            <div class="info">
+              <span class="nombre-b">${nombreB}</span>
+              <span class="vs">vs</span>
+              <span class="nombre-n">${nombreN}</span>
+            </div>
+            <select class="resultado-select" data-b="${p.blancas}" data-n="${p.negras}" data-ronda="${actual.numero}">
+              <option value="" ${!p.resultado ? 'selected' : ''}>— Pendiente</option>
+              <option value="1-0" ${p.resultado === '1-0' ? 'selected' : ''}>${nombreB} gana</option>
+              <option value="0-1" ${p.resultado === '0-1' ? 'selected' : ''}>${nombreN} gana</option>
+              <option value="1/2-1/2" ${p.resultado === '1/2-1/2' ? 'selected' : ''}>Empate</option>
+            </select>
+          </div>`;
+        }).join('');
+
+        // Mostrar/ocultar botones según estado
+        const btnGuardar = document.getElementById('btn-guardar');
+        const resultadosContainer = document.getElementById('card-resultados');
+        // Remover botón editar anterior si existe
+        const editBtnExistente = resultadosContainer.querySelector('.btn-editar-ronda');
+        if (editBtnExistente) editBtnExistente.remove();
+
+        if (todasGuardadas && !editando) {
+          // Resultados guardados: ocultar guardar, mostrar editar
+          btnGuardar.style.display = 'none';
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn btn-edit btn-editar-ronda';
+          editBtn.textContent = '✏️ Editar Resultados';
+          editBtn.onclick = function() {
+            window._editandoRonda = true;
+            // Pausar auto-refresh mientras se edita
+            if (refreshInterval) {
+              clearInterval(refreshInterval);
+              refreshInterval = null;
+            }
+            cargarRondas(t);
+            this.style.display = 'none';
+          };
+          // Ponerlo al lado del botón guardar
+          btnGuardar.parentElement.appendChild(editBtn);
+        } else {
+          btnGuardar.style.display = 'inline-block';
+          // Si estábamos editando y ya se guardó la edición, resetear flag al recargar
+          if (editando && todasGuardadas) {
+            window._editandoRonda = false;
+          }
+        }
+
+        // Restaurar valores que el usuario había cambiado (si el select aún existe)
+        document.querySelectorAll('.resultado-select').forEach(sel => {
+          const key = sel.dataset.b + '|' + sel.dataset.n + '|' + sel.dataset.ronda;
+          if (key in selectValues && selectValues[key] !== '' && selectValues[key] !== (sel.querySelector('[selected]')?.value || '')) {
+            sel.value = selectValues[key];
+          }
+        });
+      } catch (e) {}
+    }
+
+    // ── Base de jugadores ──
+
+    let baseJugadores = [];
+
+    async function cargarBaseJugadores() {
+      try {
+        const r = await fetch(API + '/api/jugadores-base');
+        baseJugadores = await r.json();
+        const sel = document.getElementById('select-jugador-base');
+        // Mantener las opciones fijas
+        sel.innerHTML = '<option value="">— Seleccionar —</option><option value="__nuevo__">🆕 Nuevo jugador</option>';
+        baseJugadores.forEach(j => {
+          const opt = document.createElement('option');
+          opt.value = j.nombre;
+          opt.textContent = `${j.nombre} ${j.elo ? '(' + j.elo + ')' : ''}`;
+          sel.appendChild(opt);
+        });
+
+        sel.onchange = function() {
+          const val = this.value;
+          const datosDiv = document.getElementById('rapido-datos');
+          if (val === '__nuevo__' || val === '') {
+            datosDiv.style.display = val === '__nuevo__' ? 'block' : 'none';
+            if (val === '__nuevo__') {
+              document.getElementById('rapido-nombre').value = '';
+              document.getElementById('rapido-email').value = '';
+              document.getElementById('rapido-telefono').value = '';
+              document.getElementById('rapido-club').value = '';
+            }
+          } else {
+            datosDiv.style.display = 'none';
+          }
+        };
+      } catch (e) {}
+    }
+
+    function inscribirRapido() {
+      const sel = document.getElementById('select-jugador-base');
+      const val = sel.value;
+      const msg = document.getElementById('rapido-msg');
+
+      let nombre, email, telefono, club;
+
+      if (val === '__nuevo__') {
+        nombre = document.getElementById('rapido-nombre').value.trim();
+        email = document.getElementById('rapido-email').value.trim();
+        telefono = document.getElementById('rapido-telefono').value.trim();
+        club = document.getElementById('rapido-club').value.trim();
+      } else if (val) {
+        // Seleccionó un jugador existente
+        const jug = baseJugadores.find(j => j.nombre === val);
+        if (jug) {
+          nombre = jug.nombre;
+          email = jug.email || '';
+          telefono = jug.telefono || '';
+          club = jug.club || '';
+        }
+      }
+
+      if (!nombre || nombre.length < 2) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Nombre requerido';
+        return;
+      }
+
+      fetch(API + '/api/inscribir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, telefono, club }),
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = `✅ ${d.conocido ? 'Bienvenido de nuevo, ' : ''}${nombre} inscripto correctamente`;
+          // Reset
+          sel.value = '';
+          document.getElementById('rapido-datos').style.display = 'none';
+          document.getElementById('rapido-nombre').value = '';
+          document.getElementById('rapido-email').value = '';
+          document.getElementById('rapido-telefono').value = '';
+          document.getElementById('rapido-club').value = '';
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      })
+      .catch(() => {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      });
+    }
+
+    // ── Editar / Eliminar jugador ──
+
+    function abrirEditar(id) {
+      const j = jugadoresCache.find(j => j.id === id);
+      if (!j) return;
+      editandoId = id;
+      document.getElementById('edit-nombre').value = j.nombre;
+      document.getElementById('edit-email').value = j.email || '';
+      document.getElementById('edit-telefono').value = j.telefono || '';
+      document.getElementById('edit-club').value = j.club || '';
+      document.getElementById('edit-msg').className = 'status-msg';
+      document.getElementById('edit-msg').textContent = '';
+      document.getElementById('modal-editar').classList.add('show');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-editar').classList.remove('show');
+      editandoId = null;
+    }
+
+    async function guardarEdicion() {
+      const msg = document.getElementById('edit-msg');
+      const nombre = document.getElementById('edit-nombre').value.trim();
+      const email = document.getElementById('edit-email').value.trim();
+      const telefono = document.getElementById('edit-telefono').value.trim();
+      const club = document.getElementById('edit-club').value.trim();
+
+      if (!nombre || nombre.length < 2) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Nombre requerido (mín 2 caracteres)';
+        return;
+      }
+
+      try {
+        const r = await fetch(API + '/api/editar-jugador', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: editandoId, nombre, email, telefono, club }),
+        });
+        const d = await r.json();
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = '✅ Jugador actualizado';
+          cerrarModal();
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    function eliminarJugador(id, nombre) {
+      if (!confirm(`¿Eliminar a "${nombre}" del torneo? Esta acción no se puede deshacer.`)) return;
+
+      const msg = document.getElementById('jugadores-msg');
+      fetch(API + '/api/eliminar-jugador', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = `✅ "${nombre}" eliminado`;
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      })
+      .catch(() => {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      });
+    }
+
+    // ── Historial de Torneos ──
+
+    // ── Estado del tab actual ──
+    let historialTab = 'torneos';
+    let historialData = null;
+
+    function switchHistorialTab(tab, btn) {
+      historialTab = tab;
+      document.querySelectorAll('.hist-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderHistorialTab();
+    }
+
+    function renderHistorialTab() {
+      if (!historialData) return;
+      const container = document.getElementById('historial-contenido');
+      const resumen = document.getElementById('historial-resumen');
+
+      if (historialTab === 'torneos') {
+        const h = historialData;
+        resumen.textContent = `📊 ${h.resumen.total_torneos} torneo(s) · ${h.resumen.total_partidas} partida(s) · ${h.resumen.total_jugadores} jugador(es)`;
+
+        if (!h.torneos || h.torneos.length === 0) {
+          container.innerHTML = '<div style="color:#555;font-style:italic">Aún no hay torneos finalizados.</div>';
+          return;
+        }
+
+        container.innerHTML = [...h.torneos].reverse().map(t => {
+          const ordenados = [...(t.jugadores || [])].sort((a, b) => b.puntos - a.puntos);
+          return '<div style="background:#1a1a35;border-radius:10px;padding:14px;margin-bottom:12px">' +
+            '<div style="display:flex;justify-content:space-between;margin-bottom:8px">' +
+              '<strong style="color:#e0e0ff">📅 ' + (t.nombre || 'Torneo') + '</strong>' +
+              '<span style="color:#666;font-size:0.85rem">' + (t.fecha || '—') + ' · ' + (t.lugar || '') + '</span>' +
+            '</div>' +
+            '<div style="font-size:0.85rem;color:#888;margin-bottom:6px">' +
+              (t.sistema || 'Suizo') + ' · ' + (t.rondas_total || '?') + ' rondas · ' + (t.ritmo || '—') +
+              ' · ' + (t.jugadores ? t.jugadores.length : 0) + ' jugadores' +
+            '</div>' +
+            '<table><thead><tr>' +
+              '<th>#</th><th>Jugador</th><th style="text-align:center">Pts</th><th style="text-align:center">Elo</th>' +
+            '</tr></thead><tbody>' +
+            ordenados.map((j, i) => '<tr>' +
+              '<td' + (i===0?' style="color:#f0c040;font-weight:700"':'') + '>' + (i+1) + (i===0?' 🥇':i===1?' 🥈':i===2?' 🥉':'') + '</td>' +
+              '<td>' + j.nombre + '</td>' +
+              '<td style="text-align:center;color:#f0c040">' + j.puntos + '</td>' +
+              '<td style="text-align:center;color:#888">' + (j.elo || '—') + '</td>' +
+            '</tr>').join('') +
+            '</tbody></table>' +
+          '</div>';
+        }).join('');
+      }
+      else if (historialTab === 'jugadores') {
+        const jugadores = historialData.jugadores;
+        resumen.textContent = '👤 ' + jugadores.length + ' jugador(es) registrados';
+
+        if (!jugadores || jugadores.length === 0) {
+          container.innerHTML = '<div style="color:#555;font-style:italic">No hay jugadores registrados.</div>';
+          return;
+        }
+
+        const ordenados = [...jugadores].sort((a, b) => b.elo - a.elo);
+        container.innerHTML =
+          '<table><thead><tr><th>#</th><th>Nombre</th><th>Club</th><th>Elo</th><th>Part.</th><th>G</th><th>E</th><th>P</th><th>%</th><th>Torneos</th></tr></thead><tbody>' +
+          ordenados.map((j, i) => '<tr>' +
+            '<td>' + (i+1) + '</td>' +
+            '<td><strong>' + j.nombre + '</strong></td>' +
+            '<td style="color:#666">' + (j.club || '—') + '</td>' +
+            '<td><strong>' + j.elo + '</strong></td>' +
+            '<td>' + j.partidas_totales + '</td>' +
+            '<td style="color:#60d080">' + j.ganadas + '</td>' +
+            '<td>' + j.empatadas + '</td>' +
+            '<td style="color:#d06060">' + j.perdidas + '</td>' +
+            '<td>' + j.rendimiento + '</td>' +
+            '<td style="color:#888">' + j.torneos_jugados + '</td>' +
+          '</tr>').join('') +
+          '</tbody></table>';
+      }
+      else if (historialTab === 'partidas') {
+        const partidas = historialData.partidas;
+        resumen.textContent = '♟️ ' + partidas.length + ' partida(s) jugadas';
+
+        if (!partidas || partidas.length === 0) {
+          container.innerHTML = '<div style="color:#555;font-style:italic">No hay partidas registradas.</div>';
+          return;
+        }
+
+        const ordenadas = [...partidas].reverse().slice(0, 200);
+        container.innerHTML =
+          '<table><thead><tr><th>Torneo</th><th>Ronda</th><th>Blancas</th><th style="text-align:center">Resultado</th><th>Negras</th></tr></thead><tbody>' +
+          ordenadas.map(p => {
+            const res = p.resultado === '1/2-1/2' ? '½-½' : (p.resultado || '—');
+            return '<tr>' +
+              '<td style="color:#888;font-size:0.8rem">' + (p.torneo || '—') + '</td>' +
+              '<td style="color:#666">' + p.ronda + '</td>' +
+              '<td><strong>' + (p.blanco_nombre || '?') + '</strong></td>' +
+              '<td style="text-align:center;color:#f0c040;font-weight:700">' + res + '</td>' +
+              '<td><strong>' + (p.negro_nombre || (p.negras_id ? '?' : '(BYE)')) + '</strong></td>' +
+            '</tr>';
+          }).join('') +
+          '</tbody></table>' +
+          (partidas.length > 200 ? '<div style="color:#555;font-size:0.8rem;margin-top:8px;text-align:center">Mostrando últimas 200 de ' + partidas.length + ' partidas</div>' : '');
+      }
+    }
+
+    async function cargarHistorial() {
+      try {
+        const r = await fetch(API + '/api/historial-completo');
+        historialData = await r.json();
+        renderHistorialTab();
+      } catch (e) {
+        document.getElementById('historial-contenido').innerHTML = '<div style="color:#555;font-style:italic">Error al cargar historial.</div>';
+      }
+    }
+
+    // ── Control ──
+
+    async function iniciarTorneo() {
+      const msg = document.getElementById('control-msg');
+      try {
+        const r = await fetch(API + '/api/iniciar', { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = '✅ Torneo iniciado correctamente';
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    async function avanzarRonda() {
+      const msg = document.getElementById('control-msg');
+      try {
+        const r = await fetch(API + '/api/avanzar-ronda', { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) {
+          window._editandoRonda = false;
+          msg.className = 'status-msg success';
+          msg.textContent = `✅ Ronda ${d.ronda.numero} generada`;
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    async function guardarResultados() {
+      const msg = document.getElementById('resultados-msg');
+      const selects = document.querySelectorAll('.resultado-select');
+
+      // Validar que todos los selects tengan un resultado (excepto BYE)
+      let incompletos = [];
+      selects.forEach((sel, i) => {
+        // Si negras es null es un BYE, no necesita resultado
+        const negrasId = parseInt(sel.dataset.n);
+        if (!sel.value && !isNaN(negrasId) && negrasId !== 0) {
+          incompletos.push(i + 1);
+        }
+      });
+
+      if (incompletos.length > 0) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Faltan resultados: seleccioná el resultado de todas las partidas antes de guardar.';
+        // Resaltar los selects vacíos
+        selects.forEach(sel => {
+          const negrasId = parseInt(sel.dataset.n);
+          if (!sel.value && !isNaN(negrasId) && negrasId !== 0) {
+            sel.style.borderColor = '#d05050';
+            sel.style.background = '#3a1a1a';
+          } else {
+            sel.style.borderColor = '';
+            sel.style.background = '';
+          }
+        });
+        return;
+      }
+
+      // Limpiar resaltados
+      selects.forEach(sel => { sel.style.borderColor = ''; sel.style.background = ''; });
+
+      // Construir array de resultados
+      const resultados = [];
+      selects.forEach(sel => {
+        if (sel.value) {
+          resultados.push({
+            ronda_numero: parseInt(sel.dataset.ronda),
+            blancas_id: parseInt(sel.dataset.b),
+            negras_id: parseInt(sel.dataset.n),
+            resultado: sel.value,
+          });
+        }
+      });
+
+      let errors = 0;
+      for (const res of resultados) {
+        try {
+          const r = await fetch(API + '/api/resultado', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(res),
+          });
+          const d = await r.json();
+          if (!d.ok) errors++;
+        } catch { errors++; }
+      }
+
+      if (errors === 0) {
+        window._editandoRonda = false;
+        // Reactivar auto-refresh si estaba pausado
+        if (!refreshInterval) {
+          refreshInterval = setInterval(refresh, 10000);
+        }
+        msg.className = 'status-msg success';
+        msg.textContent = `✅ ${resultados.length} resultado(s) guardados`;
+      } else {
+        msg.className = 'status-msg info';
+        msg.textContent = `⚠️ Guardados ${resultados.length - errors}/${resultados.length} (${errors} error(es))`;
+      }
+      refresh();
+    }
+
+    async function finalizarTorneo() {
+      const msg = document.getElementById('control-msg');
+      if (!confirm('¿Estás seguro de finalizar el torneo? No se podrán avanzar más rondas ni modificar resultados.')) return;
+
+      try {
+        const r = await fetch(API + '/api/finalizar-torneo', { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = '🏁 Torneo finalizado correctamente';
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    async function nuevoTorneo() {
+      const msg = document.getElementById('control-msg');
+      if (!confirm('¿Crear un nuevo torneo? Se borrarán los datos del torneo actual.')) return;
+
+      try {
+        const r = await fetch(API + '/api/nuevo-torneo', { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = '🆕 Nuevo torneo creado. Configuralo antes de empezar.';
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    // ── Exportar PDF ──
+
+    async function exportarPDF() {
+      const msg = document.getElementById('control-msg');
+      try {
+        const r = await fetch(API + '/api/jugadores');
+        const data = await r.json();
+        const t = estadoActual;
+
+        if (!data.jugadores || data.jugadores.length === 0) {
+          msg.className = 'status-msg show error';
+          msg.textContent = '❌ No hay datos para exportar';
+          return;
+        }
+
+        const ordenados = [...data.jugadores].sort((a, b) => {
+          if (b.puntos !== a.puntos) return b.puntos - a.puntos;
+          if ((b.buchholz || 0) !== (a.buchholz || 0)) return (b.buchholz || 0) - (a.buchholz || 0);
+          return (b.sonneborn || 0) - (a.sonneborn || 0);
+        });
+
+        // Construir HTML limpio para impresión
+        let html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;padding:20px;color:#222;font-size:12pt}
+h1{font-size:18pt;margin-bottom:2px}
+.sub{color:#555;font-size:10pt;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:10pt}
+th{background:#e8e8e8;text-align:left;padding:5px 7px;border:1px solid #bbb;font-weight:600}
+td{padding:5px 7px;border:1px solid #ccc}
+tr:nth-child(even){background:#f8f8f8}
+.pos-1{background:#fff8e0;font-weight:700}
+h2{font-size:13pt;margin:20px 0 8px;border-bottom:2px solid #333;padding-bottom:4px}
+.ronda{border:1px solid #ccc;border-radius:4px;padding:10px;margin-bottom:8px;font-size:10pt}
+.ronda strong{display:block;margin-bottom:4px;color:#444}
+@media print{body{padding:10mm}@page{margin:15mm}}
+</style></head><body>
+`;
+
+        html += `<h1>♟️ ${t.nombre || 'Torneo de Ajedrez'}</h1>`;
+        html += `<div class="sub">${[t.lugar, t.ciudad, t.provincia, t.pais].filter(Boolean).join(', ') || ''}${t.fecha ? ' · ' + t.fecha : ''}${t.sistema ? ' · ' + t.sistema : ''}${t.ritmo ? ' · ' + t.ritmo : ''}${t.rondas_total ? ' · ' + t.rondas_total + ' rondas' : ''}</div>`;
+
+        // Tabla de posiciones
+        html += `<h2>Posiciones Finales</h2><table><tr><th>#</th><th>Jugador</th><th>Elo</th><th>Pts</th><th>V</th><th>E</th><th>D</th><th>Buchholz</th><th>S-B</th></tr>`;
+        ordenados.forEach((j, i) => {
+          html += `<tr${i===0?' class="pos-1"':''}><td>${i+1}</td><td><strong>${j.nombre}</strong></td><td>${j.elo || '—'}</td><td><strong>${j.puntos}</strong></td><td>${j.victorias||0}</td><td>${j.empates||0}</td><td>${j.derrotas||0}</td><td>${j.buchholz != null ? j.buchholz.toFixed(1) : '—'}</td><td>${j.sonneborn != null ? j.sonneborn.toFixed(1) : '—'}</td></tr>`;
+        });
+        html += `</table>`;
+
+        // Rondas
+        if (data.rondas && data.rondas.length > 0) {
+          html += `<h2>Rondas</h2>`;
+          const ids = new Map();
+          ordenados.forEach(j => ids.set(j.id, j.nombre));
+          data.rondas.forEach(r => {
+            html += `<div class="ronda"><strong>Ronda ${r.numero}</strong>`;
+            r.partidas.forEach(p => {
+              const nb = ids.get(p.blancas) || '?';
+              const nn = p.negras ? (ids.get(p.negras) || '?') : '(BYE)';
+              const res = p.resultado === '1/2-1/2' ? '½-½' : (p.resultado || '—');
+              html += `${nb} vs ${nn} → ${res}<br>`;
+            });
+            html += `</div>`;
+          });
+        }
+
+        html += `<div style="margin-top:24px;color:#999;font-size:8pt">Generado por Torneo de Ajedrez Ceres · ${new Date().toLocaleDateString('es-AR')}</div>`;
+        html += `</body></html>`;
+
+        // MÉTODO MEJORADO: crear un blob URL en vez de window.open
+        msg.className = 'status-msg show info';
+        msg.textContent = '⏳ Abriendo reporte...';
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+
+        // Intentar abrir en nueva pestaña
+        const win = window.open(url, '_blank');
+
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          // Popup bloqueado: crear un link directo para descargar HTML
+          msg.className = 'status-msg show info';
+          msg.textContent = '🔽 Popup bloqueado. Hacé clic acá para descargar el reporte.';
+
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'reporte-torneo.html';
+          a.textContent = '📄 Descargar Reporte';
+          a.style.display = 'inline-block';
+          a.style.padding = '12px 24px';
+          a.style.background = '#5a4aff';
+          a.style.color = 'white';
+          a.style.textDecoration = 'none';
+          a.style.borderRadius = '8px';
+          a.style.fontSize = '16px';
+          a.style.fontWeight = '600';
+          a.style.marginTop = '8px';
+           
+          // Limpiar mensaje anterior y agregar el link
+          const container = msg.parentElement;
+          msg.textContent = '🔽 Popup bloqueado. ';
+          // Agregar el link después del mensaje
+          const existingLink = container.querySelector('a[download]');
+          if (existingLink) existingLink.remove();
+          container.appendChild(a);
+          
+          a.onclick = function() {
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+          };
+        } else {
+          win.document.write(html);
+          win.document.close();
+          win.focus();
+          setTimeout(() => {
+            win.print();
+            URL.revokeObjectURL(url);
+          }, 500);
+          msg.className = 'status-msg show success';
+          msg.textContent = '✅ Reporte generado. Usá "Guardar como PDF" o Ctrl+P.';
+        }
+      } catch (e) {
+        msg.className = 'status-msg show error';
+        msg.textContent = '❌ Error al generar reporte: ' + e.message;
+      }
+    }
+
+    // ── Imprimir Ronda ──
+
+    function imprimirRonda() {
+      const rondas = document.querySelectorAll('.partida-row');
+      const rondaNum = document.getElementById('ronda-label').textContent;
+      const nomTorneo = document.getElementById('input-nombre').value || document.getElementById('input-lugar').value || 'Torneo de Ajedrez';
+
+      let html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Ronda ${rondaNum}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Courier New',monospace;padding:15mm 20mm;color:#111}
+h1{font-size:16pt;margin-bottom:2px}
+.sub{color:#555;font-size:10pt;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;font-size:11pt}
+th{background:#222;color:#fff;text-align:center;padding:8px 6px;font-size:10pt}
+td{text-align:center;padding:10px 6px;border-bottom:1px solid #999}
+tr.partida td{border-bottom:1px solid #ccc}
+.mesa{font-weight:700;font-size:12pt;width:60px}
+.blancas{text-align:right;padding-right:10px;width:40%}
+.resultado{font-weight:700;font-size:13pt;width:80px;color:#222}
+.negras{text-align:left;padding-left:10px;width:40%}
+.vs{color:#999;font-size:9pt}
+.bye{color:#999;font-style:italic}
+.footer{margin-top:30px;font-size:9pt;color:#999;border-top:1px solid #ddd;padding-top:10px}
+@media print{@page{margin:15mm 20mm}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+`;
+      html += `<h1>♟️ ${nomTorneo}</h1>`;
+      html += `<div class="sub">${rondaNum} · Fecha: ..... / ..... / 2026</div>`;
+
+      html += `<table><tr><th>Mesa</th><th>Blancas</th><th class="resultado">Resultado</th><th>Negras</th></tr>`;
+
+      rondas.forEach((row, i) => {
+        const b = row.querySelector('.nombre-b');
+        const n = row.querySelector('.nombre-n');
+        const res = row.querySelector('.resultado-select, .resultado-select + span, span:last-child');
+        
+        let nombreB = b ? b.textContent.trim() : '?';
+        let nombreN = n ? n.textContent.trim() : '—';
+        
+        // Si es BYE, mostrar línea especial
+        const isBye = !n || (n && n.textContent.trim() === '(BYE)');
+        
+        if (isBye) {
+          html += `<tr class="partida"><td class="mesa">${i+1}</td><td class="blancas"><strong>${nombreB}</strong></td><td class="resultado bye">BYE</td><td class="negras"></td></tr>`;
+        } else {
+          html += `<tr class="partida"><td class="mesa">${i+1}</td><td class="blancas"><strong>${nombreB}</strong></td><td class="resultado">—</td><td class="negras"><strong>${nombreN}</strong></td></tr>`;
+        }
+      });
+
+      html += `</table>`;
+      html += `<div class="footer">Árbitro: ............................................... · Firma: ........................... </div>`;
+      html += `</body></html>`;
+
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const win = window.open(url, '_blank');
+
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        // Popup bloqueado: descarga directa
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ronda-${rondaNum.replace(/[^0-9]/g,'')}.html`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } else {
+        win.document.write(html);
+        win.document.close();
+        win.focus();
+        setTimeout(() => {
+          win.print();
+          URL.revokeObjectURL(url);
+        }, 300);
+      }
+    }
+
+    async function guardarConfig() {
+      const msg = document.getElementById('config-msg');
+      const cupo = parseInt(document.getElementById('input-cupo').value);
+      const rondas = parseInt(document.getElementById('input-rondas').value);
+      const nombre = document.getElementById('input-nombre').value;
+      const lugar = document.getElementById('input-lugar').value;
+      const ciudad = document.getElementById('input-ciudad').value;
+      const provincia = document.getElementById('input-provincia').value;
+      const pais = document.getElementById('input-pais').value;
+      const fecha = document.getElementById('input-fecha').value;
+      const ritmo = document.getElementById('input-ritmo').value;
+
+      try {
+        const r = await fetch(API + '/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cupo_maximo: cupo, rondas_total: rondas, nombre, lugar, ciudad, provincia, pais, fecha, ritmo }),
+        });
+        const d = await r.json();
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = '✅ Configuración guardada';
+          refresh();
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    refresh();
+
+    // ── Pausar auto-refresh mientras el usuario escribe ──
+    let refreshInterval = setInterval(refresh, 10000);
+
+    document.addEventListener('focusin', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') {
+        clearInterval(refreshInterval);
+        refreshInterval = null;
+      }
+    });
+
+    document.addEventListener('focusout', function(e) {
+      if (!refreshInterval && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) {
+        refreshInterval = setInterval(refresh, 10000);
+      }
+    });
+  </script>
+</body>
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && document.getElementById('login-screen').style.display === 'flex') {
+        intentarLogin();
+      }
+
+      // Enter en modal de edición
+      if (e.key === 'Enter' && document.getElementById('modal-editar').classList.contains('show')) {
+        guardarEdicion();
+      }
+    });
+
+    if (autenticado) {
+      mostrarAdmin();
+      refresh();
+    } else {
+      mostrarLogin();
+    }
+  </script>
+  </div> <!-- /admin-content -->
+</body>
+</html>

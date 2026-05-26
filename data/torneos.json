@@ -1,0 +1,891 @@
+[
+  {
+    "id": 1,
+    "nombre": "Torneo de Ajedrez Ceres",
+    "fecha": "",
+    "lugar": "",
+    "sistema": "Suizo",
+    "ritmo": "",
+    "rondas_total": 7,
+    "jugadores": [
+      {
+        "id": 1,
+        "nombre": "Ana",
+        "elo": 1516,
+        "puntos": 1,
+        "victorias": 1,
+        "empates": 0,
+        "derrotas": 0,
+        "buchholz": 0,
+        "sonneborn": 0
+      },
+      {
+        "id": 2,
+        "nombre": "Bruno",
+        "elo": 1484,
+        "puntos": 0,
+        "victorias": 0,
+        "empates": 0,
+        "derrotas": 1,
+        "buchholz": 1,
+        "sonneborn": 0
+      },
+      {
+        "id": 3,
+        "nombre": "Carla",
+        "elo": 1500,
+        "puntos": 1,
+        "victorias": 1,
+        "empates": 0,
+        "derrotas": 0,
+        "buchholz": 0,
+        "sonneborn": 0
+      }
+    ],
+    "rondas": [
+      {
+        "numero": 1,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": 2,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 3,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      }
+    ],
+    "finalizado": "2026-05-24T00:52:36.056Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Torneo de Ajedrez Ceres",
+    "fecha": "2026-06-15",
+    "lugar": "Ceres, Santa Fe",
+    "sistema": "Suizo",
+    "ritmo": "15+10",
+    "rondas_total": 7,
+    "jugadores": [
+      {
+        "id": 1,
+        "nombre": "Carlos",
+        "elo": 1528,
+        "puntos": 6,
+        "victorias": 6,
+        "empates": 0,
+        "derrotas": 1,
+        "buchholz": 18,
+        "sonneborn": 14
+      },
+      {
+        "id": 2,
+        "nombre": "María",
+        "elo": 1488,
+        "puntos": 4.5,
+        "victorias": 4,
+        "empates": 1,
+        "derrotas": 2,
+        "buchholz": 19.5,
+        "sonneborn": 6.75
+      },
+      {
+        "id": 3,
+        "nombre": "Pedro",
+        "elo": 1468,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 3,
+        "buchholz": 20,
+        "sonneborn": 4.5
+      },
+      {
+        "id": 4,
+        "nombre": "Ana",
+        "elo": 1518,
+        "puntos": 5.5,
+        "victorias": 5,
+        "empates": 1,
+        "derrotas": 1,
+        "buchholz": 18.5,
+        "sonneborn": 10.25
+      },
+      {
+        "id": 5,
+        "nombre": "Luis",
+        "elo": 1498,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 2,
+        "buchholz": 20,
+        "sonneborn": 10
+      }
+    ],
+    "rondas": [
+      {
+        "numero": 1,
+        "partidas": [
+          {
+            "blancas": 3,
+            "negras": 2,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": 1,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 5,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 2,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": 3,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 2,
+            "negras": 4,
+            "resultado": "1/2-1/2"
+          },
+          {
+            "blancas": null,
+            "negras": 5,
+            "resultado": "0-1"
+          }
+        ]
+      },
+      {
+        "numero": 3,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": 2,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": 3,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 5,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 4,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": 5,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 4,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 3,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 2,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 5,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": 5,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 3,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 2,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 6,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 3,
+            "negras": 5,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 2,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 7,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 5,
+            "negras": 2,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 3,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      }
+    ],
+    "finalizado": "2026-05-24T13:03:00.331Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Torneo de Ajedrez Ceres",
+    "fecha": "2026-05-29",
+    "lugar": "Ceres",
+    "sistema": "Suizo",
+    "ritmo": "10 + 2",
+    "rondas_total": 5,
+    "jugadores": [
+      {
+        "id": 1,
+        "nombre": "Rafael Jiménez",
+        "elo": 1518,
+        "puntos": 3,
+        "victorias": 3,
+        "empates": 0,
+        "derrotas": 2,
+        "buchholz": 12,
+        "sonneborn": 5
+      },
+      {
+        "id": 2,
+        "nombre": "Augusto Jiménez",
+        "elo": 1563,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 0,
+        "buchholz": 12,
+        "sonneborn": 12
+      },
+      {
+        "id": 3,
+        "nombre": "Carlos",
+        "elo": 1484,
+        "puntos": 3,
+        "victorias": 3,
+        "empates": 0,
+        "derrotas": 2,
+        "buchholz": 7,
+        "sonneborn": 1
+      },
+      {
+        "id": 4,
+        "nombre": "Pedro",
+        "elo": 1546,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 1,
+        "buchholz": 14,
+        "sonneborn": 10
+      },
+      {
+        "id": 5,
+        "nombre": "Ana",
+        "elo": 1498,
+        "puntos": 2,
+        "victorias": 2,
+        "empates": 0,
+        "derrotas": 2,
+        "buchholz": 9,
+        "sonneborn": 5
+      },
+      {
+        "id": 6,
+        "nombre": "Bruno",
+        "elo": 1453,
+        "puntos": 1,
+        "victorias": 1,
+        "empates": 0,
+        "derrotas": 4,
+        "buchholz": 13,
+        "sonneborn": 2
+      },
+      {
+        "id": 7,
+        "nombre": "Carla",
+        "elo": 1454,
+        "puntos": 2,
+        "victorias": 2,
+        "empates": 0,
+        "derrotas": 3,
+        "buchholz": 8,
+        "sonneborn": 0
+      },
+      {
+        "id": 8,
+        "nombre": "Roberto Nieva",
+        "elo": 1484,
+        "puntos": 2,
+        "victorias": 2,
+        "empates": 0,
+        "derrotas": 3,
+        "buchholz": 14,
+        "sonneborn": 3
+      },
+      {
+        "id": 9,
+        "nombre": "Alberto Ganin",
+        "elo": 1500,
+        "puntos": 3,
+        "victorias": 3,
+        "empates": 0,
+        "derrotas": 2,
+        "buchholz": 12,
+        "sonneborn": 4
+      }
+    ],
+    "rondas": [
+      {
+        "numero": 1,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": 2,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 4,
+            "negras": 3,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 5,
+            "negras": 6,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 8,
+            "negras": 7,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 9,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 2,
+        "partidas": [
+          {
+            "blancas": 2,
+            "negras": 4,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 8,
+            "negras": 6,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 9,
+            "negras": 1,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 5,
+            "negras": 3,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 7,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 3,
+        "partidas": [
+          {
+            "blancas": 8,
+            "negras": 2,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 6,
+            "negras": 9,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 4,
+            "negras": 7,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 1,
+            "negras": 5,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 3,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 4,
+        "partidas": [
+          {
+            "blancas": 2,
+            "negras": 9,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": 8,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 1,
+            "negras": 6,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 5,
+            "negras": 7,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 3,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 5,
+        "partidas": [
+          {
+            "blancas": 2,
+            "negras": 5,
+            "resultado": null
+          },
+          {
+            "blancas": 9,
+            "negras": 4,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 1,
+            "negras": 8,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 6,
+            "negras": 3,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 7,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      }
+    ],
+    "finalizado": "2026-05-24T20:13:38.924Z"
+  },
+  {
+    "id": 4,
+    "nombre": "Torneo de Ajedrez Ceres",
+    "fecha": "2026-05-30",
+    "lugar": "Rosario",
+    "sistema": "Suizo",
+    "ritmo": "10 + 2",
+    "rondas_total": 5,
+    "jugadores": [
+      {
+        "id": 1,
+        "nombre": "Rafael Jiménez",
+        "elo": 1518,
+        "puntos": 0,
+        "victorias": 0,
+        "empates": 0,
+        "derrotas": 0
+      },
+      {
+        "id": 2,
+        "nombre": "Roberto Nieva",
+        "elo": 1484,
+        "puntos": 0,
+        "victorias": 0,
+        "empates": 0,
+        "derrotas": 0
+      },
+      {
+        "id": 3,
+        "nombre": "Alberto Ganin",
+        "elo": 1500,
+        "puntos": 0,
+        "victorias": 0,
+        "empates": 0,
+        "derrotas": 0
+      }
+    ],
+    "rondas": [
+      {
+        "numero": 1,
+        "partidas": [
+          {
+            "blancas": 1,
+            "negras": 3,
+            "resultado": null
+          },
+          {
+            "blancas": 2,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      }
+    ],
+    "finalizado": "2026-05-24T21:56:05.657Z"
+  },
+  {
+    "id": 5,
+    "nombre": "Torneo de Ajedrez Ceres",
+    "fecha": "2026-05-24",
+    "lugar": "Pergamino",
+    "sistema": "Suizo",
+    "ritmo": "5 + 2",
+    "rondas_total": 5,
+    "jugadores": [
+      {
+        "id": 1,
+        "nombre": "Rafael Jiménez",
+        "elo": 1561,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 1,
+        "buchholz": 15.5,
+        "sonneborn": 11.5
+      },
+      {
+        "id": 2,
+        "nombre": "Augusto Jiménez",
+        "elo": 1600,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 1,
+        "buchholz": 14.5,
+        "sonneborn": 10.5
+      },
+      {
+        "id": 3,
+        "nombre": "Roberto Nieva",
+        "elo": 1534,
+        "puntos": 4,
+        "victorias": 4,
+        "empates": 0,
+        "derrotas": 1,
+        "buchholz": 13,
+        "sonneborn": 9
+      },
+      {
+        "id": 4,
+        "nombre": "Alberto Ganin",
+        "elo": 1499,
+        "puntos": 2.5,
+        "victorias": 2,
+        "empates": 1,
+        "derrotas": 2,
+        "buchholz": 12.5,
+        "sonneborn": 3.5
+      },
+      {
+        "id": 5,
+        "nombre": "Carlos",
+        "elo": 1454,
+        "puntos": 1.5,
+        "victorias": 1,
+        "empates": 1,
+        "derrotas": 3,
+        "buchholz": 13.5,
+        "sonneborn": 1.75
+      },
+      {
+        "id": 6,
+        "nombre": "María",
+        "elo": 1478,
+        "puntos": 2,
+        "victorias": 1,
+        "empates": 2,
+        "derrotas": 2,
+        "buchholz": 16,
+        "sonneborn": 5.25
+      },
+      {
+        "id": 7,
+        "nombre": "Pedro",
+        "elo": 1522,
+        "puntos": 2.5,
+        "victorias": 2,
+        "empates": 1,
+        "derrotas": 2,
+        "buchholz": 10,
+        "sonneborn": 2.5
+      },
+      {
+        "id": 8,
+        "nombre": "Ana",
+        "elo": 1514,
+        "puntos": 3,
+        "victorias": 2,
+        "empates": 2,
+        "derrotas": 1,
+        "buchholz": 11.5,
+        "sonneborn": 5.25
+      },
+      {
+        "id": 9,
+        "nombre": "Carla",
+        "elo": 1428,
+        "puntos": 1.5,
+        "victorias": 1,
+        "empates": 1,
+        "derrotas": 3,
+        "buchholz": 12,
+        "sonneborn": 1.75
+      },
+      {
+        "id": 10,
+        "nombre": "Bruno",
+        "elo": 1398,
+        "puntos": 1,
+        "victorias": 1,
+        "empates": 0,
+        "derrotas": 4,
+        "buchholz": 8,
+        "sonneborn": 0
+      }
+    ],
+    "rondas": [
+      {
+        "numero": 1,
+        "partidas": [
+          {
+            "blancas": 2,
+            "negras": 7,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 4,
+            "negras": 1,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 8,
+            "negras": 6,
+            "resultado": "1/2-1/2"
+          },
+          {
+            "blancas": 5,
+            "negras": 3,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 9,
+            "negras": 10,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 2,
+        "partidas": [
+          {
+            "blancas": 2,
+            "negras": 1,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 9,
+            "negras": 3,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 8,
+            "negras": 7,
+            "resultado": "1/2-1/2"
+          },
+          {
+            "blancas": 4,
+            "negras": 6,
+            "resultado": "1/2-1/2"
+          },
+          {
+            "blancas": 5,
+            "negras": 10,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 3,
+        "partidas": [
+          {
+            "blancas": 3,
+            "negras": 1,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 5,
+            "negras": 2,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 9,
+            "negras": 8,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 7,
+            "negras": 6,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 4,
+            "negras": 10,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 4,
+        "partidas": [
+          {
+            "blancas": 3,
+            "negras": 6,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 8,
+            "negras": 1,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 2,
+            "negras": 4,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 9,
+            "negras": 5,
+            "resultado": "1/2-1/2"
+          },
+          {
+            "blancas": 7,
+            "negras": 10,
+            "resultado": "1-0"
+          }
+        ]
+      },
+      {
+        "numero": 5,
+        "partidas": [
+          {
+            "blancas": 3,
+            "negras": 2,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 6,
+            "negras": 1,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 8,
+            "negras": 5,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 9,
+            "negras": 4,
+            "resultado": "0-1"
+          },
+          {
+            "blancas": 7,
+            "negras": null,
+            "resultado": "1-0"
+          },
+          {
+            "blancas": 10,
+            "negras": null,
+            "resultado": "1-0"
+          }
+        ]
+      }
+    ],
+    "finalizado": "2026-05-24T22:44:11.584Z"
+  }
+]

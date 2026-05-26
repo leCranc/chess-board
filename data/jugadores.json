@@ -1,0 +1,454 @@
+[
+  {
+    "nombre": "Carlos",
+    "email": "Carlos@test.com",
+    "telefono": "",
+    "club": "Club Carlos",
+    "elo": 1454,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 6,
+        "fecha": "2026-05-24T00:22:58.695Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 6,
+        "posicion": "-",
+        "fecha": "2026-06-15"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "fecha": "2026-05-24T20:02:59.650Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T20:38:14.821Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1.5,
+        "fecha": "2026-05-24T21:58:09.838Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1.5,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "María",
+    "email": "María@test.com",
+    "telefono": "",
+    "club": "Club María",
+    "elo": 1478,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4.5,
+        "fecha": "2026-05-24T00:22:58.729Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4.5,
+        "posicion": "-",
+        "fecha": "2026-06-15"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "fecha": "2026-05-24T21:58:15.983Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Pedro",
+    "email": "Pedro@test.com",
+    "telefono": "",
+    "club": "Club Pedro",
+    "elo": 1522,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "fecha": "2026-05-24T00:22:58.746Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "posicion": "-",
+        "fecha": "2026-06-15"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "fecha": "2026-05-24T20:03:10.526Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2.5,
+        "fecha": "2026-05-24T21:58:23.358Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2.5,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Ana",
+    "email": "",
+    "telefono": "",
+    "club": "",
+    "elo": 1514,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "fecha": "2026-05-24T00:52:35.972Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 5.5,
+        "posicion": "-",
+        "fecha": "2026-05-24T00:52:36.056Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 5.5,
+        "posicion": "-",
+        "fecha": "2026-06-15"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "fecha": "2026-05-24T20:03:19.127Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "fecha": "2026-05-24T21:58:29.631Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Bruno",
+    "email": "",
+    "telefono": "",
+    "club": "",
+    "elo": 1398,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T00:52:35.992Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "posicion": "-",
+        "fecha": "2026-05-24T00:52:36.056Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "fecha": "2026-05-24T20:03:25.041Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "fecha": "2026-05-24T21:59:18.783Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Carla",
+    "email": "",
+    "telefono": "",
+    "club": "",
+    "elo": 1428,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "fecha": "2026-05-24T00:52:36.012Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1,
+        "posicion": "-",
+        "fecha": "2026-05-24T00:52:36.056Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "fecha": "2026-05-24T20:03:33.336Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1.5,
+        "fecha": "2026-05-24T21:58:51.547Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 1.5,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Rafael Jiménez",
+    "email": "rajimsa.agro@gmail.com",
+    "telefono": "+543412726536",
+    "club": "Círculo de Ajedrez Ceresino",
+    "elo": 1561,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T01:50:08.311Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "fecha": "2026-05-24T15:12:23.732Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T21:47:08.588Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "posicion": "-",
+        "fecha": "2026-05-30"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "fecha": "2026-05-24T21:57:32.390Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Augusto Jiménez",
+    "email": "r.a.jimenezzzz@gmail.com",
+    "telefono": "+5493412726536",
+    "club": "Círculo de Ajedrez Ceresino",
+    "elo": 1600,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T01:51:20.865Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "fecha": "2026-05-24T15:12:30.367Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "fecha": "2026-05-24T21:57:36.795Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Roberto Nieva",
+    "email": "",
+    "telefono": "3491464646",
+    "club": "Ceres",
+    "elo": 1534,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "fecha": "2026-05-24T20:04:47.470Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T21:47:36.090Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "posicion": "-",
+        "fecha": "2026-05-30"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "fecha": "2026-05-24T21:57:49.985Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 4,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Alberto Ganin",
+    "email": "",
+    "telefono": "3491323232",
+    "club": "Ceres",
+    "elo": 1499,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "fecha": "2026-05-24T20:06:06.755Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 3,
+        "posicion": "-",
+        "fecha": "2026-05-29"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T20:37:18.090Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T21:47:49.299Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "posicion": "-",
+        "fecha": "2026-05-30"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2.5,
+        "fecha": "2026-05-24T21:57:57.960Z"
+      },
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 2.5,
+        "posicion": "-",
+        "fecha": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "nombre": "Facundo Dominguez",
+    "email": "",
+    "telefono": "",
+    "club": "Ceres",
+    "elo": 1500,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T20:37:01.296Z"
+      }
+    ]
+  },
+  {
+    "nombre": "Pedro Sánchez",
+    "email": "Pedro@test.com",
+    "telefono": "",
+    "club": "España",
+    "elo": 1500,
+    "historial": [
+      {
+        "torneo": "Torneo de Ajedrez Ceres",
+        "puntaje": 0,
+        "fecha": "2026-05-24T20:37:54.033Z"
+      }
+    ]
+  }
+]
