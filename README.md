@@ -32,7 +32,7 @@ Construido por IArvis 👩‍🦳
 ## Cómo usarlo
 
 ```bash
-cd builds/2026-05-20-torneo-ajedrez
+cd chess-board
 node server.js
 ```
 
