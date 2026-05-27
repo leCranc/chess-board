@@ -463,6 +463,107 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── POST /api/inscribir-admin (admin: torneo iniciado) ─
+
+  if (pathname === '/api/inscribir-admin' && req.method === 'POST') {
+    try {
+      const body = await parseBody(req);
+      const { nombre, email, telefono, club } = body;
+
+      if (!nombre || nombre.trim().length < 2) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'Nombre requerido (mín 2 caracteres)' }));
+        return;
+      }
+
+      const t = loadTorneo();
+
+      // Solo admin puede inscribir con torneo iniciado, y solo hasta el 50% de rondas
+      if (t.torneo_iniciado && !t.torneo_finalizado) {
+        const rondasMax = Math.floor(t.rondas_total / 2);
+        if (t.rondas.length >= rondasMax) {
+          res.writeHead(400);
+          res.end(JSON.stringify({ error: 'Inscripción tardía no permitida: ya pasó el 50% del torneo.' }));
+          return;
+        }
+      }
+
+      if (t.torneo_finalizado) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'El torneo ya finalizó.' }));
+        return;
+      }
+
+      if (t.jugadores.length >= t.cupo_maximo && t.cupo_maximo > 0) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'Cupo completo' }));
+        return;
+      }
+
+      const exists = t.jugadores.some(j => j.nombre.toLowerCase() === nombre.trim().toLowerCase());
+      if (exists) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'Ya hay un jugador registrado con ese nombre' }));
+        return;
+      }
+
+      const base = loadJugadoresBase();
+      const baseIdx = base.findIndex(j => j.nombre.toLowerCase() === nombre.trim().toLowerCase());
+
+      let eloJugador = 1500;
+      if (baseIdx >= 0 && base[baseIdx].elo) {
+        eloJugador = base[baseIdx].elo;
+      }
+
+      const jugador = {
+        id: t.jugadores.length + 1,
+        nombre: nombre.trim(),
+        email: (email || '').trim(),
+        elo: eloJugador,
+        elo_inicial: eloJugador,
+        telefono: (telefono || '').trim(),
+        club: (club || '').trim(),
+        fecha_inscripcion: new Date().toISOString(),
+        puntos: 0,
+        desempate: 0,
+        victorias: 0,
+        empates: 0,
+        derrotas: 0,
+        inscripcion_tardia: t.torneo_iniciado ? true : false,
+      };
+
+      if (baseIdx >= 0) {
+        base[baseIdx] = {
+          ...base[baseIdx],
+          email: jugador.email,
+          telefono: jugador.telefono,
+          club: jugador.club,
+          historial: [...(base[baseIdx].historial || []), { torneo: t.nombre || 'Torneo Ceres', puntaje: 0, fecha: new Date().toISOString() }]
+        };
+      } else {
+        base.push({
+          nombre: jugador.nombre,
+          email: jugador.email,
+          telefono: jugador.telefono,
+          club: jugador.club,
+          elo: 1500,
+          historial: [{ torneo: t.nombre || 'Torneo Ceres', puntaje: 0, fecha: new Date().toISOString() }]
+        });
+      }
+      saveJugadoresBase(base);
+
+      t.jugadores.push(jugador);
+      saveTorneo(t);
+
+      res.writeHead(201, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: true, jugador, conocido: baseIdx >= 0, inscripcion_tardia: true }));
+    } catch (e) {
+      res.writeHead(400);
+      res.end(JSON.stringify({ error: 'Datos inválidos' }));
+    }
+    return;
+  }
+
   // ── POST /api/editar-jugador ─────────────────
 
   if (pathname === '/api/editar-jugador' && req.method === 'POST') {

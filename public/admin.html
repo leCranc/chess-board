@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="adminTitle">Chess Tournament Admin</title>
+  <title>Torneo Ajedrez | Panel Admin</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -93,7 +93,6 @@
     .modal .field { margin-bottom: 12px; }
     .modal .btn-row { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
   </style>
-  <script src="/i18n.js"></script>
 </head>
 <body>
   <!-- ════ Login Screen ════ -->
@@ -119,8 +118,8 @@
   <div id="admin-content">
   <div class="container">
     <nav>
-      <a href="/" data-i18n="home">🏠 Home</a>
-      <a href="/panel-admin" class="active" data-i18n="adminPanel">⚙️ Admin</a>
+      <a href="/">🏠 Inicio</a>
+      <a href="/panel-admin" class="active">⚙️ Admin</a>
       <a href="#" onclick="cerrarSesion()" style="margin-left:auto;color:#d06060">🔒 Salir</a>
     </nav>
 
@@ -230,7 +229,7 @@
 
     <!-- ══ Jugadores ══ -->
     <div class="card" id="card-jugadores">
-      <h2>👥 Jugadores</h2>
+      <h2>👥 Jugadores <button class="btn btn-sm btn-success" onclick="abrirInscripcionAdmin()" style="margin-left:12px;font-size:0.8rem">+ Agregar Jugador</button></h2>
       <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
         <thead><tr><th>#</th><th>Nombre</th><th>Elo</th><th>Club</th><th>Pts</th><th>Acciones</th></tr></thead>
         <tbody id="admin-jugadores"></tbody>
@@ -269,7 +268,36 @@
 
   </div>
 
-  <!-- ════ Modal Editar Jugador ════ -->
+  <!-- ════ Modal Inscripción Admin ════ -->
+  <div class="modal-overlay" id="modal-inscripcion-admin">
+    <div class="modal">
+      <h3>➕ Agregar Jugador <span id="inscripcion-admin-badge" style="display:none;font-size:0.75rem;background:#d08020;color:white;padding:2px 8px;border-radius:8px;margin-left:8px">Inscripción tardía</span></h3>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:12px">El jugador arrancará con 0 puntos y entrará al próximo emparejamiento.</p>
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" id="insc-admin-nombre" placeholder="Nombre completo">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="insc-admin-email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="text" id="insc-admin-telefono" placeholder="+54 9...">
+      </div>
+      <div class="field">
+        <label>Club</label>
+        <input type="text" id="insc-admin-club" placeholder="Club o localidad">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-success" onclick="confirmarInscripcionAdmin()">✅ Inscribir</button>
+        <button class="btn" style="background:#3a3a5a;color:#aaa" onclick="cerrarModalInscripcion()">Cancelar</button>
+      </div>
+      <div class="status-msg" id="insc-admin-msg"></div>
+    </div>
+  </div>
+
+
   <div class="modal-overlay" id="modal-editar">
     <div class="modal">
       <h3>✏️ Editar Jugador</h3>
@@ -1255,6 +1283,77 @@ tr.partida td{border-bottom:1px solid #ccc}
         msg.textContent = '❌ Error de conexión';
       }
     }
+
+    // ── Inscripción por Admin (torneo iniciado) ──
+
+    const inscAdminModal = document.getElementById('modal-inscripcion-admin');
+
+    function abrirInscripcionAdmin() {
+      document.getElementById('insc-admin-nombre').value = '';
+      document.getElementById('insc-admin-email').value = '';
+      document.getElementById('insc-admin-telefono').value = '';
+      document.getElementById('insc-admin-club').value = '';
+      document.getElementById('insc-admin-msg').className = 'status-msg';
+      document.getElementById('insc-admin-msg').textContent = '';
+
+      const badge = document.getElementById('inscripcion-admin-badge');
+      if (estadoActual.torneo_iniciado && !estadoActual.torneo_finalizado) {
+        badge.style.display = 'inline';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      inscAdminModal.classList.add('show');
+      document.getElementById('insc-admin-nombre').focus();
+    }
+
+    function cerrarModalInscripcion() {
+      inscAdminModal.classList.remove('show');
+    }
+
+    async function confirmarInscripcionAdmin() {
+      const msg = document.getElementById('insc-admin-msg');
+      const nombre = document.getElementById('insc-admin-nombre').value.trim();
+      const email = document.getElementById('insc-admin-email').value.trim();
+      const telefono = document.getElementById('insc-admin-telefono').value.trim();
+      const club = document.getElementById('insc-admin-club').value.trim();
+
+      if (!nombre || nombre.length < 2) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Nombre requerido (mín 2 caracteres)';
+        return;
+      }
+
+      try {
+        const r = await fetch(API + '/api/inscribir-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, email, telefono, club }),
+        });
+        const d = await r.json();
+        if (d.ok) {
+          msg.className = 'status-msg success';
+          msg.textContent = '✅ ' + nombre + ' inscripto correctamente';
+          setTimeout(() => {
+            cerrarModalInscripcion();
+            refresh();
+          }, 1000);
+        } else {
+          msg.className = 'status-msg error';
+          msg.textContent = '❌ ' + (d.error || 'Error');
+        }
+      } catch (e) {
+        msg.className = 'status-msg error';
+        msg.textContent = '❌ Error de conexión';
+      }
+    }
+
+    // Enter en modal de inscripción admin
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && inscAdminModal.classList.contains('show')) {
+        confirmarInscripcionAdmin();
+      }
+    });
 
     refresh();
 
